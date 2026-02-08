@@ -1,8 +1,9 @@
 package com.davidr.hospital.modelo.entidad;
-
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
-
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,7 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.Data;
-
+import lombok.ToString;
 @Entity
 @Data
 public class Doctor implements Serializable {
@@ -33,6 +34,8 @@ public class Doctor implements Serializable {
 	@JoinColumn(name = "id_departamento")
 	private Departamento departamento;
 	
-	@OneToMany(mappedBy = "doctor")
-	private List<Cita> citas;
+	@ToString.Exclude
+	@OneToMany(mappedBy = "doctor", cascade = CascadeType.REFRESH)
+	@JsonBackReference
+	private List<Cita> citas = new ArrayList<>();
 }

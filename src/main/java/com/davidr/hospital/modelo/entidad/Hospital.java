@@ -1,15 +1,16 @@
 package com.davidr.hospital.modelo.entidad;
-
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
-
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import lombok.Data;
-
+import lombok.ToString;
 @Entity
 @Data
 public class Hospital implements Serializable {
@@ -26,6 +27,8 @@ public class Hospital implements Serializable {
 	private String emailHospital;
 	private String tipoHospital;
 	
-	@OneToMany(mappedBy = "hospital")
-	private List<Departamento> departamentos;
+	@ToString.Exclude
+	@OneToMany(mappedBy = "hospital", cascade = CascadeType.REFRESH)
+	@JsonBackReference
+	private List<Departamento> departamentos = new ArrayList<>();
 }
